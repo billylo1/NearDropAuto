@@ -98,6 +98,12 @@
             "state" : "translated",
             "value" : "接受"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "接受"
+          }
         }
       }
     },
@@ -197,6 +203,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "拒绝"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "拒絕"
           }
         }
       }
@@ -305,6 +317,12 @@
             "state" : "translated",
             "value" : "设备名称: %@"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "裝置名稱：%@"
+          }
         }
       }
     },
@@ -411,6 +429,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$@ 正向你发送 %2$@"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ 想要向你傳送 %2$@"
           }
         }
       }
@@ -519,6 +543,12 @@
             "state" : "translated",
             "value" : "加密出错"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "加密錯誤"
+          }
         }
       }
     },
@@ -625,6 +655,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "通信出错"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "通訊錯誤"
           }
         }
       }
@@ -966,6 +1002,18 @@
               }
             }
           }
+        },
+        "zh-Hant" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%d 份檔案"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -1072,6 +1120,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "NearDrop 需显示是否接收文件传输的通知。请在 系统设置 中允许通知。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "NearDrop 需要顯示檔案傳入的通知，請在系統設定中允許通知。"
           }
         }
       }
@@ -1180,6 +1234,12 @@
             "state" : "translated",
             "value" : "打开设置"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "開啟系統設定"
+          }
         }
       }
     },
@@ -1286,6 +1346,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "需要通知权限"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "需要通知權限"
           }
         }
       }
@@ -1394,6 +1460,12 @@
             "state" : "translated",
             "value" : "PIN: %@"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PIN 碼：%@"
+          }
         }
       }
     },
@@ -1497,6 +1569,12 @@
           }
         },
         "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "退出 NearDrop"
+          }
+        },
+        "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "退出 NearDrop"
@@ -1608,6 +1686,12 @@
             "state" : "translated",
             "value" : "无法从 %@ 接收文件"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "無法從 %@ 接收檔案"
+          }
         }
       }
     },
@@ -1714,6 +1798,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "对所有人可见"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "所有人都可與你分享內容"
           }
         }
       }
