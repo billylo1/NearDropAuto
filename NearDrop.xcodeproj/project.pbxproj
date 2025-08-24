@@ -395,6 +395,7 @@
 				fr,
 				ar,
 				ro,
+				"zh-Hant",
 			);
 			mainGroup = 69DA9A0529E0BF5100A442DA;
 			packageReferences = (
