@@ -37,7 +37,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
 		let incomingTransfersCategory=UNNotificationCategory(identifier: "INCOMING_TRANSFERS", actions: [
 			UNNotificationAction(identifier: "ACCEPT", title: NSLocalizedString("Accept", comment: ""), options: UNNotificationActionOptions.authenticationRequired),
 			UNNotificationAction(identifier: "DECLINE", title: NSLocalizedString("Decline", comment: ""))
-		], intentIdentifiers: [])
+		], intentIdentifiers: [], options: [.customDismissAction])
 		let errorsCategory=UNNotificationCategory(identifier: "ERRORS", actions: [], intentIdentifiers: [])
 		nc.setNotificationCategories([incomingTransfersCategory, errorsCategory])
 		NearbyConnectionManager.shared.mainAppDelegate=self
@@ -97,9 +97,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
 		notificationContent.sound = .default
 		notificationContent.categoryIdentifier="INCOMING_TRANSFERS"
 		notificationContent.userInfo=["transferID": transfer.id]
-		if #available(macOS 11.0, *){
-			NDNotificationCenterHackery.removeDefaultAction(notificationContent)
-		}
 		let notificationReq=UNNotificationRequest(identifier: "transfer_"+transfer.id, content: notificationContent, trigger: nil)
 		UNUserNotificationCenter.current().add(notificationReq)
 		self.activeIncomingTransfers[transfer.id]=TransferInfo(device: device, transfer: transfer)
