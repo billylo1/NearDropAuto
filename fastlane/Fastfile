@@ -1,0 +1,46 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+app_store_connect_api_key(
+  key_id: "TH4226994B",
+  issuer_id: "bdd730e8-537e-471c-b068-ded20bbd7f82",
+  key_filepath: "~/Xcode/keys/Evergreen_AppConnectAPI_TH4226994B.p8",
+)
+
+default_platform(:mac)
+get_provisioning_profile(
+  app_identifier: "org.evergreenlabs.QuickShare",
+  adhoc: false,
+  platform: "macos"
+)
+
+platform :mac do
+
+  lane :beta do
+    build_mac_app(
+      scheme: "NearDrop",
+      export_method: "app-store",
+      output_directory: "./build",
+      skip_package_pkg: true,
+      export_options: {
+        method: "app-store-connect",
+        signingStyle: "automatic",
+      }
+    )
+    upload_to_testflight(skip_waiting_for_build_processing: true)
+  end
+
+  lane :release do
+    build_mac_app
+    upload_to_app_store
+  end
+end
+
