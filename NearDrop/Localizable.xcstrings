@@ -118,6 +118,50 @@
         }
       }
     },
+    "LaunchAtLogin" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Launch at login"
+          }
+        }
+      }
+    },
+    "LaunchAtLoginError" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Launch at Login Error"
+          }
+        }
+      }
+    },
+    "LaunchAtLoginUnsupported" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Feature Not Available"
+          }
+        }
+      }
+    },
+    "LaunchAtLoginUnsupportedMessage" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Launch at login requires macOS 13 or later."
+          }
+        }
+      }
+    },
     "Decline" : {
       "localizations" : {
         "ar" : {

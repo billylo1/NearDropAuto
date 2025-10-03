@@ -8,6 +8,7 @@
 import Cocoa
 import UserNotifications
 import NearbyShare
+import ServiceManagement
 
 @main
 class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDelegate, MainAppDelegate{
@@ -15,6 +16,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
 	private var activeIncomingTransfers:[String:TransferInfo]=[:]
 	private static let autoAcceptKey = "autoAcceptFiles"
 	private var autoAcceptMenuItem:NSMenuItem?
+	private var launchAtLoginMenuItem:NSMenuItem?
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
 		let menu=NSMenu()
@@ -27,6 +29,12 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
 		autoAcceptItem.state = UserDefaults.standard.bool(forKey: AppDelegate.autoAcceptKey) ? .on : .off
 		autoAcceptMenuItem = autoAcceptItem
 		menu.addItem(autoAcceptItem)
+		
+		let launchAtLoginItem = NSMenuItem(title: NSLocalizedString("LaunchAtLogin", value: "Launch at login", comment: ""), action: #selector(toggleLaunchAtLogin(_:)), keyEquivalent: "")
+		launchAtLoginItem.target = self
+		launchAtLoginItem.state = isLaunchAtLoginEnabled() ? .on : .off
+		launchAtLoginMenuItem = launchAtLoginItem
+		menu.addItem(launchAtLoginItem)
 		
 		menu.addItem(NSMenuItem.separator())
 		menu.addItem(withTitle: NSLocalizedString("Quit", value: "Quit QuickShare", comment: ""), action: #selector(NSApplication.terminate(_:)), keyEquivalent: "")
@@ -71,6 +79,44 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
 		let newValue = !UserDefaults.standard.bool(forKey: AppDelegate.autoAcceptKey)
 		UserDefaults.standard.set(newValue, forKey: AppDelegate.autoAcceptKey)
 		sender.state = newValue ? .on : .off
+	}
+	
+	@objc func toggleLaunchAtLogin(_ sender: NSMenuItem) {
+		if #available(macOS 13.0, *) {
+			let service = SMAppService.mainApp
+			let isEnabled = service.status == .enabled
+			
+			do {
+				if isEnabled {
+					try service.unregister()
+					sender.state = .off
+				} else {
+					try service.register()
+					sender.state = .on
+				}
+			} catch {
+				print("Failed to \(isEnabled ? "unregister" : "register") launch at login: \(error.localizedDescription)")
+				let alert = NSAlert()
+				alert.messageText = NSLocalizedString("LaunchAtLoginError", value: "Launch at Login Error", comment: "")
+				alert.informativeText = error.localizedDescription
+				alert.alertStyle = .warning
+				alert.runModal()
+			}
+		} else {
+			// For macOS 12 and earlier, show a message that this feature requires macOS 13+
+			let alert = NSAlert()
+			alert.messageText = NSLocalizedString("LaunchAtLoginUnsupported", value: "Feature Not Available", comment: "")
+			alert.informativeText = NSLocalizedString("LaunchAtLoginUnsupportedMessage", value: "Launch at login requires macOS 13 or later.", comment: "")
+			alert.alertStyle = .informational
+			alert.runModal()
+		}
+	}
+	
+	private func isLaunchAtLoginEnabled() -> Bool {
+		if #available(macOS 13.0, *) {
+			return SMAppService.mainApp.status == .enabled
+		}
+		return false
 	}
 	
 	func showNotificationsDeniedAlert(){
