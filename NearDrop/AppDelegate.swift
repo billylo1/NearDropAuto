@@ -13,11 +13,21 @@ import NearbyShare
 class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDelegate, MainAppDelegate{
 	private var statusItem:NSStatusItem?
 	private var activeIncomingTransfers:[String:TransferInfo]=[:]
+	private static let autoAcceptKey = "autoAcceptFiles"
+	private var autoAcceptMenuItem:NSMenuItem?
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
 		let menu=NSMenu()
 		menu.addItem(withTitle: NSLocalizedString("VisibleToEveryone", value: "Visible to everyone", comment: ""), action: nil, keyEquivalent: "")
 		menu.addItem(withTitle: String(format: NSLocalizedString("DeviceName", value: "Device name: %@", comment: ""), arguments: [Host.current().localizedName!]), action: nil, keyEquivalent: "")
+		menu.addItem(NSMenuItem.separator())
+		
+		let autoAcceptItem = NSMenuItem(title: NSLocalizedString("AutoAccept", value: "Auto-accept files", comment: ""), action: #selector(toggleAutoAccept(_:)), keyEquivalent: "")
+		autoAcceptItem.target = self
+		autoAcceptItem.state = UserDefaults.standard.bool(forKey: AppDelegate.autoAcceptKey) ? .on : .off
+		autoAcceptMenuItem = autoAcceptItem
+		menu.addItem(autoAcceptItem)
+		
 		menu.addItem(NSMenuItem.separator())
 		menu.addItem(withTitle: NSLocalizedString("Quit", value: "Quit QuickShare", comment: ""), action: #selector(NSApplication.terminate(_:)), keyEquivalent: "")
 		statusItem=NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
@@ -57,6 +67,12 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
         return true
     }
 	
+	@objc func toggleAutoAccept(_ sender: NSMenuItem) {
+		let newValue = !UserDefaults.standard.bool(forKey: AppDelegate.autoAcceptKey)
+		UserDefaults.standard.set(newValue, forKey: AppDelegate.autoAcceptKey)
+		sender.state = newValue ? .on : .off
+	}
+	
 	func showNotificationsDeniedAlert(){
 		let alert=NSAlert()
 		alert.alertStyle = .critical
@@ -90,16 +106,36 @@ class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDele
 		}else{
 			fileStr=String.localizedStringWithFormat(NSLocalizedString("NFiles", value: "%d files", comment: ""), transfer.files.count)
 		}
-		let notificationContent=UNMutableNotificationContent()
-		notificationContent.title="NearDrop"
-		notificationContent.subtitle=String(format:NSLocalizedString("PinCode", value: "PIN: %@", comment: ""), arguments: [transfer.pinCode!])
-		notificationContent.body=String(format: NSLocalizedString("DeviceSendingFiles", value: "%1$@ is sending you %2$@", comment: ""), arguments: [device.name, fileStr])
-		notificationContent.sound = .default
-		notificationContent.categoryIdentifier="INCOMING_TRANSFERS"
-		notificationContent.userInfo=["transferID": transfer.id]
-		let notificationReq=UNNotificationRequest(identifier: "transfer_"+transfer.id, content: notificationContent, trigger: nil)
-		UNUserNotificationCenter.current().add(notificationReq)
-		self.activeIncomingTransfers[transfer.id]=TransferInfo(device: device, transfer: transfer)
+		
+		let autoAccept = UserDefaults.standard.bool(forKey: AppDelegate.autoAcceptKey)
+		
+		if autoAccept {
+			// Auto-accept the transfer
+			NearbyConnectionManager.shared.submitUserConsent(transferID: transfer.id, accept: true)
+			self.activeIncomingTransfers[transfer.id]=TransferInfo(device: device, transfer: transfer)
+			
+			// Show an informational notification (without action buttons)
+			let notificationContent=UNMutableNotificationContent()
+			notificationContent.title="NearDrop"
+			notificationContent.subtitle=String(format:NSLocalizedString("PinCode", value: "PIN: %@", comment: ""), arguments: [transfer.pinCode!])
+			notificationContent.body=String(format: NSLocalizedString("ReceivingFiles", value: "Receiving %1$@ from %2$@", comment: ""), arguments: [fileStr, device.name])
+			notificationContent.sound = .default
+			notificationContent.categoryIdentifier="ERRORS" // Use ERRORS category which has no actions
+			let notificationReq=UNNotificationRequest(identifier: "transfer_"+transfer.id, content: notificationContent, trigger: nil)
+			UNUserNotificationCenter.current().add(notificationReq)
+		} else {
+			// Show notification with Accept/Decline buttons
+			let notificationContent=UNMutableNotificationContent()
+			notificationContent.title="NearDrop"
+			notificationContent.subtitle=String(format:NSLocalizedString("PinCode", value: "PIN: %@", comment: ""), arguments: [transfer.pinCode!])
+			notificationContent.body=String(format: NSLocalizedString("DeviceSendingFiles", value: "%1$@ is sending you %2$@", comment: ""), arguments: [device.name, fileStr])
+			notificationContent.sound = .default
+			notificationContent.categoryIdentifier="INCOMING_TRANSFERS"
+			notificationContent.userInfo=["transferID": transfer.id]
+			let notificationReq=UNNotificationRequest(identifier: "transfer_"+transfer.id, content: notificationContent, trigger: nil)
+			UNUserNotificationCenter.current().add(notificationReq)
+			self.activeIncomingTransfers[transfer.id]=TransferInfo(device: device, transfer: transfer)
+		}
 	}
 	
 	func incomingTransfer(id: String, didFinishWith error: Error?) {

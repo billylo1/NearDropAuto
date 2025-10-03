@@ -107,6 +107,17 @@
         }
       }
     },
+    "AutoAccept" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Auto-accept files"
+          }
+        }
+      }
+    },
     "Decline" : {
       "localizations" : {
         "ar" : {
@@ -1465,6 +1476,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "PIN 碼：%@"
+          }
+        }
+      }
+    },
+    "ReceivingFiles" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Receiving %1$@ from %2$@"
           }
         }
       }
