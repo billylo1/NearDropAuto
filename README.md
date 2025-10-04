@@ -1,3 +1,10 @@
+**QuickShare** is a forked version of [NearDrop](https://github.com/grishka/NearDrop) with the following changes:
+
+* Mac App Store compliance - switched to use public API to achieve removeDefaultAction of the notification
+* Added Auto-Receive and Launch at Startup on the menu bar
+* Signing configuration to enable publishing on [Mac App Store](https://blog.google/products/android/nearby-share/)
+* Renamed it to QuickShare Pro to avoid confusion with the original NearDrop
+
 **NearDrop** is a partial implementation of [Google's Nearby Share](https://blog.google/products/android/nearby-share/)/Quick Share for macOS.
 
 [Protocol documentation](/PROTOCOL.md) is available separately.
@@ -15,21 +22,7 @@ Download the latest build from the releases section, unzip, move to your applica
 
 If you want the app to start on boot, [follow these steps to add NearDrop as a login item.](https://support.apple.com/guide/mac-help/open-items-automatically-when-you-log-in-mh15189/mac)
 
-#### Installation with Homebrew
-
-```
-brew install --no-quarantine grishka/grishka/neardrop
-```
-
-## Contributing
-
-Pull requests that change the readme will not be accepted.
-
 ## FAQ
-
-#### The app would not open because "Apple cannot check it for malicious software", you gotta fix your shit
-
-Right-click the app in Finder and select "Open". Or, open System Settings -> Privacy and security, scroll down and allow the app to run.
 
 #### My Android device doesn't see my Mac
 
@@ -74,14 +67,6 @@ Yes. Drag the icon off the menu bar while holding cmd. To bring it back, launch 
 #### I'm sending something to my Mac, the Android device displays a PIN code, but nothing happens on the Mac
 
 Make sure you have "do not disturb" off. The notification may also sometimes (rarely) end up in the notification center without being shown as a popup first — I'm not sure why this happens.
-
-#### Why is the app not notarized?
-
-Because I don't want to pay Apple $99 a year for the privilege of developing macOS apps and I oppose their idea of security. The slightly less scary security warning isn't worth $99/year IMO.
-
-#### Why is this not on the app store?
-
-Because I don't want to pay Apple $99 a year for the privilege of developing macOS apps. I also don't want to have to go through the review process.
 
 #### Why not the other way around, i.e. AirDrop on Android?
 
